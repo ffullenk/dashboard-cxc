@@ -4,7 +4,8 @@ class Usuario extends Doctrine_Record{
     function  setTableDefinition() {
         $this->hasColumn('id');
         $this->hasColumn('twitter_id');
-        $this->hasColumn('twitter_screen_name');
+        $this->hasColumn('facebook_id');
+        $this->hasColumn('screen_name');
         $this->hasColumn('proyecto_id');
     }
     

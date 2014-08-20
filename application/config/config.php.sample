@@ -360,6 +360,25 @@ $config['proxy_ips'] = '';
 $config['twitter_consumer_key']='';
 $config['twitter_consumer_secret']='';
 
+$config['facebook_consumer_key']='';
+$config['facebook_consumer_secret']='';
+
+/*
+Mini theme system: Themes availables in /assets/themes
+	Convention:
+	$config['theme']	= 'cxc'; -> Files from /assets/themes/cxc
+
+	Default theme: cxc
+
+	Required files:
+	/assets/themes/cxc
+		- styles.css // Custom styles
+		- header.php // Meta tags and page title
+		- footer.php // custom footter
+		- logo.png // Img logo
+*/
+
+$config['theme']	= '';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

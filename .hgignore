@@ -1,0 +1,5 @@
+syntax: glob
+application/config/database.php
+application/config/config.php
+nbproject
+.idea

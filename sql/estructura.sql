@@ -1,49 +1,61 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+-- phpMyAdmin SQL Dump
+-- version 3.5.8.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: May 16, 2014 at 01:18 PM
+-- Server version: 5.6.13
+-- PHP Version: 5.3.28
 
-CREATE SCHEMA IF NOT EXISTS `hackaton` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `hackaton` ;
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
--- -----------------------------------------------------
--- Table `hackaton`.`proyecto`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `hackaton`.`proyecto` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `nombre` VARCHAR(128) NOT NULL ,
-  `descripcion` TEXT NOT NULL ,
-  `url` VARCHAR(256) NOT NULL ,
-  `usuario_id` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `fk_proyecto_usuario1` (`usuario_id` ASC) ,
-  CONSTRAINT `fk_proyecto_usuario1`
-    FOREIGN KEY (`usuario_id` )
-    REFERENCES `hackaton`.`usuario` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+--
+-- Database: `muevett-proyectos`
+--
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `hackaton`.`usuario`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `hackaton`.`usuario` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `twitter_id` INT UNSIGNED NOT NULL ,
-  `twitter_screen_name` VARCHAR(128) NOT NULL ,
-  `proyecto_id` INT UNSIGNED NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `twitter_id_UNIQUE` (`twitter_id` ASC) ,
-  INDEX `fk_usuario_proyecto` (`proyecto_id` ASC) ,
-  CONSTRAINT `fk_usuario_proyecto`
-    FOREIGN KEY (`proyecto_id` )
-    REFERENCES `hackaton`.`proyecto` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+--
+-- Table structure for table `proyecto`
+--
 
+CREATE TABLE IF NOT EXISTS `proyecto` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(128) NOT NULL,
+  `descripcion` text NOT NULL,
+  `url` varchar(256) NOT NULL,
+  `usuario_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_proyecto_usuario1` (`usuario_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
+-- --------------------------------------------------------
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+--
+-- Table structure for table `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `twitter_id` varchar(32) DEFAULT NULL,
+  `facebook_id` varchar(32) DEFAULT NULL,
+  `screen_name` varchar(128) NOT NULL DEFAULT '',
+  `proyecto_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `twitter_id_UNIQUE` (`twitter_id`),
+  UNIQUE KEY `facebook_id` (`facebook_id`),
+  KEY `fk_usuario_proyecto` (`proyecto_id`),
+  CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`proyecto_id`) REFERENCES `proyecto` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `proyecto`
+--
+ALTER TABLE `proyecto`
+  ADD CONSTRAINT `proyecto_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+

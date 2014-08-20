@@ -1,32 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Codeando x Chile</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <?php include('assets/themes/'.$this->config->item('theme').'/header.php'); ?>
         <link href="<?= base_url() ?>assets/css/bootstrap.css" rel="stylesheet" media="screen">
         <link href="<?= base_url() ?>assets/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
         <link href="<?= base_url() ?>assets/css/render.css" rel="stylesheet" media="screen">
-        <link href="<?= base_url() ?>assets/css/common.css" rel="stylesheet" media="screen">
+        <link href="<?= base_url() ?>assets/themes/<?= $this->config->item('theme') ?>/style.css" rel="stylesheet" media="screen">
     </head>
     <body>
         <header id="render">
             <div class="container">
                 <div class="row">
+
                     <div class="span7" id="logo">
-                        <h1><img src="<?= base_url('assets/img/logo.png') ?>" alt="CodeandoxChile"/></h1>
-                    </div>
+                        <h1><img src="<?= base_url('assets/themes/'.$this->config->item('theme').'/logo.png') ?>" alt="CodeandoxChile"/></h1>                   </div>
                     <div class="offset1 span4">
                         <div class="navbar">
                             <div class="navbar-inner">
                                 <div class="container"> <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
                                     <div class="nav-collapse">
                                         <ul class="nav">
-                                            <li><a href="#modalCrearProyecto" data-toggle="modal">Crear nuevo proyecto</a></li>
+                                            <li><a href="#modalCrearProyecto" data-toggle="modal">Crear nueva idea</a></li>
                                             <?php if (!UsuarioSesion::usuario()): ?>
-                                                <li><a href="<?= site_url('autenticacion/oauth_login') ?>">Iniciar sesión</a></li>
+                                                <li><a>Entra con <span style="cursor: pointer;" onclick="javascript:window.location='<?= site_url('autenticacion/oauth_login') ?>'">Twitter</span> o <span style="cursor: pointer;" onclick="javascript:window.location='<?= site_url('autenticacion/oauth2_login') ?>'">Facebook</span></a></li>
                                             <?php else: ?>
-                                                <li class="dropdown"> <a data-toggle="dropdown" class="dropdown-toggle" href="single.html">Bienvenido <?= UsuarioSesion::usuario()->twitter_screen_name ?><b class="caret"></b></a>
+                                                <li class="dropdown"> <a data-toggle="dropdown" class="dropdown-toggle" href="single.html">Bienvenido <?= UsuarioSesion::usuario()->screen_name ?><b class="caret"></b></a>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="<?= site_url('autenticacion/logout') ?>">Cerrar sesión</a></li>
                                                     </ul>
@@ -70,17 +68,23 @@
                                     
                                 <?php
                                 $usuarios = array();
-                                $usuarios[] = '<a class="label label-inverse" href="http://twitter.com/' . $p->UsuarioDueno->twitter_screen_name . '" target="_blank">@' . $p->UsuarioDueno->twitter_screen_name . '</a>';
+                                if($p->UsuarioDueno->twitter_id)
+                                    $usuarios[] = '<a class="label label-inverse" href="http://twitter.com/' . $p->UsuarioDueno->screen_name . '" target="_blank">@' . $p->UsuarioDueno->screen_name . '</a>';
+                                else
+                                    $usuarios[] = '<a class="label label-inverse" href="http://facebook.com/app_scoped_user_id/' . $p->UsuarioDueno->facebook_id . '" target="_blank">' . $p->UsuarioDueno->screen_name . '</a>';
                                 foreach ($p->Usuarios as $u)
-                                    $usuarios[] = '<a class="label" href="http://twitter.com/' . $u->twitter_screen_name . '" target="_blank">@' . $u->twitter_screen_name . '</a>';
+                                    if($u->twitter_id)
+                                        $usuarios[] = '<a class="label" href="http://twitter.com/' . $u->screen_name . '" target="_blank">@' . $u->screen_name . '</a>';
+                                    else
+                                        $usuarios[] = '<a class="label" href="http://facebook.com/app_scoped_user_id/' . $u->facebook_id . '" target="_blank">' . $u->screen_name . '</a>';
                                 ?>
-                                <p><img src="<?=base_url('assets/img/twitter.png')?>" alt="Twitter" /> <?= implode(' ', $usuarios) ?></p>
+                                <p><?= implode(' ', $usuarios) ?></p>
                                 <br />
                                 <p style="text-align: right;">
                                     <?php if (UsuarioSesion::usuario() && $p->usuario_id == UsuarioSesion::usuario()->id): ?>
-                                        <a class="unirse" href="#" onclick="javascript:modalEditarProyecto(<?= $p->id ?>)">Editar proyecto <i class="icon-edit icon-white"></i></a>
+                                        <a class="unirse" href="#" onclick="javascript:modalEditarProyecto(<?= $p->id ?>)">Editar idea <i class="icon-edit icon-white"></i></a>
                                     <?php else: ?>
-                                        <a class="unirse" href="#" onclick="javascript:modalUnirseAProyecto(<?= $p->id ?>)">Unirse al proyecto <i class="icon-plus-sign icon-white"></i></a>
+                                        <a class="unirse" href="#" onclick="javascript:modalUnirseAProyecto(<?= $p->id ?>)">Unirse a la idea <i class="icon-plus-sign icon-white"></i></a>
                                     <?php endif ?>
                                 </p>
                             </div>
@@ -91,12 +95,12 @@
             </div>
         </section>
         <footer>
-
+            <?php include('assets/themes/'.$this->config->item('theme').'/footer.php'); ?>
         </footer>
         <div id="modalCrearProyecto" class="modal hide fade">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3>Crear nuevo proyecto</h3>
+                <h3>Crear nueva idea</h3>
             </div>
             <div class="modal-body">
                 <?php if (UsuarioSesion::usuario()): ?>
@@ -111,7 +115,7 @@
                         <input class="input-xlarge" type="text" name="url" />
                     </form>
                 <?php else: ?>
-                    <p>Necesitas estar logueado para crear un proyecto.</p>
+                    <p>Necesitas estar logueado para crear una idea.</p>
                 <?php endif ?>
             </div>
             <div class="modal-footer">
@@ -124,9 +128,7 @@
 
         </div>
 
-
-
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="<?= base_url() ?>assets/js/bootstrap.min.js"></script>
         <script src="<?= base_url() ?>assets/js/jquery.isotope.min.js"></script>
         <script>

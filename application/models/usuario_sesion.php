@@ -1,7 +1,5 @@
 <?php
 
-require_once 'application/third_party/twitteroauth/twitteroauth.php';
-
 class UsuarioSesion {
 
     private static $user;
@@ -74,7 +72,7 @@ class UsuarioSesion {
                 $usuario=new Usuario();
                 $usuario->twitter_id=$token_credentials['user_id'];
             }
-            $usuario->twitter_screen_name=$token_credentials['screen_name'];
+            $usuario->screen_name=$token_credentials['screen_name'];
             $usuario->save();
             
             //Logueamos al usuario
@@ -84,6 +82,59 @@ class UsuarioSesion {
         }
         
         redirect();
+    }
+
+    public static function login_oauth2($response_url){
+        $CI = & get_instance();
+
+        $provider = new League\OAuth2\Client\Provider\Facebook(array(
+            'clientId'  =>  $CI->config->item('facebook_consumer_key'),
+            'clientSecret'  =>  $CI->config->item('facebook_consumer_secret'),
+            'redirectUri'   =>  $response_url
+        ));
+
+        header('Location: '.$provider->getAuthorizationUrl());
+    }
+
+    public static function login_oauth2_response() {
+        $CI = & get_instance();
+
+        $provider = new League\OAuth2\Client\Provider\Facebook(array(
+            'clientId'  =>  $CI->config->item('facebook_consumer_key'),
+            'clientSecret'  =>  $CI->config->item('facebook_consumer_secret'),
+            'redirectUri'   =>  current_url()
+        ));
+
+        $token = $provider->getAccessToken('authorization_code', array(
+            'code' => $_GET['code']
+        ));
+
+        try {
+
+            // We got an access token, let's now get the user's details
+            $token_credentials = $provider->getUserDetails($token);
+
+            $usuario=Doctrine::getTable('Usuario')->findOneByFacebookId($token_credentials->uid);
+            if(!$usuario){
+                $usuario=new Usuario();
+                $usuario->facebook_id=$token_credentials->uid;
+            }
+            $usuario->screen_name=$token_credentials->name;
+            $usuario->save();
+
+            //Logueamos al usuario
+            $CI->session->set_userdata('usuario_id', $usuario->id);
+            self::$user = $usuario;
+
+            redirect();
+
+        } catch (Exception $e) {
+
+            // Failed to get user details
+            print_r($e);
+            exit('Fallo en autenticacion.');
+        }
+
     }
 
     public static function logout() {

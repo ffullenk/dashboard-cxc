@@ -19,6 +19,11 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
+			//Default theme
+			if($this->config->item('theme')==''){
+				$this->config->set_item('theme', 'cxc');
+			}
+
             $data['proyectos']= Doctrine_Query::create()
                     ->from('Proyecto p, p.Usuarios u')
                     ->select('p.*, COUNT(u.id) as nusuarios')

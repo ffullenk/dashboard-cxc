@@ -18,6 +18,20 @@ class Autenticacion extends CI_Controller {
             
             
         }
+
+    public function oauth2_login(){
+        UsuarioSesion::login_oauth2(site_url('autenticacion/oauth2_response'));
+
+
+    }
+
+    function oauth2_response(){
+        UsuarioSesion::login_oauth2_response();
+
+
+
+
+    }
         
         function logout(){
             UsuarioSesion::logout();
