@@ -16,6 +16,8 @@ class Proyectos extends CI_Controller {
         $this->form_validation->set_rules('descripcion', 'Descripcion', 'required');
         $this->form_validation->set_rules('url','URL','prep_url');
 
+        $respuesta = new stdClass();
+
         if ($this->form_validation->run() == TRUE) {
             $proyecto=new Proyecto();
             $proyecto->nombre=$this->input->post('nombre');
@@ -56,6 +58,8 @@ class Proyectos extends CI_Controller {
 
         $this->form_validation->set_rules('unirse', 'Unirse', 'required');
 
+        $respuesta = new stdClass();
+
         if ($this->form_validation->run() == TRUE) {
             UsuarioSesion::usuario()->proyecto_id=$proyecto->id;
             UsuarioSesion::usuario()->save();
@@ -92,6 +96,8 @@ class Proyectos extends CI_Controller {
         $this->form_validation->set_rules('nombre', 'Nombre', 'required');
         $this->form_validation->set_rules('descripcion', 'Descripcion', 'required');
         $this->form_validation->set_rules('url','URL','prep_url');
+
+        $respuesta = new stdClass();
 
         if ($this->form_validation->run() == TRUE) {
             $proyecto->nombre=$this->input->post('nombre');

@@ -13,7 +13,7 @@
                 <div class="row">
 
                     <div class="span7" id="logo">
-                        <h1><img src="<?= base_url('assets/themes/'.$this->config->item('theme').'/logo.png') ?>" alt="CodeandoxChile"/></h1>                   </div>
+                        <h1><img src="<?= base_url('assets/themes/'.$this->config->item('theme').'/logo.png') ?>" alt="Logo"/></h1>                   </div>
                     <div class="offset1 span4">
                         <div class="navbar">
                             <div class="navbar-inner">
@@ -22,7 +22,14 @@
                                         <ul class="nav">
                                             <li><a href="#modalCrearProyecto" data-toggle="modal">Crear nueva idea</a></li>
                                             <?php if (!UsuarioSesion::usuario()): ?>
-                                                <li><a>Entra con <span style="cursor: pointer;" onclick="javascript:window.location='<?= site_url('autenticacion/oauth_login') ?>'">Twitter</span> o <span style="cursor: pointer;" onclick="javascript:window.location='<?= site_url('autenticacion/oauth2_login') ?>'">Facebook</span></a></li>
+                                                <li><a>Entra con 
+                                                    <?php if($this->config->item('twitter_consumer_key')!=''): ?>
+                                                        <span style="cursor: pointer;" onclick="javascript:window.location='<?= site_url('autenticacion/oauth_login') ?>'">Twitter</span> 
+                                                    <?php endif;?>
+                                                    <?php if($this->config->item('facebook_consumer_key')!=''): ?>
+                                                        <span style="cursor: pointer;" onclick="javascript:window.location='<?= site_url('autenticacion/oauth2_login') ?>'">Facebook</span>
+                                                    <?php endif;?>
+                                                </a></li>
                                             <?php else: ?>
                                                 <li class="dropdown"> <a data-toggle="dropdown" class="dropdown-toggle" href="single.html">Bienvenido <?= UsuarioSesion::usuario()->screen_name ?><b class="caret"></b></a>
                                                     <ul class="dropdown-menu">

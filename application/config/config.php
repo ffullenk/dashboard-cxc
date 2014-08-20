@@ -357,14 +357,18 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-$config['twitter_consumer_key']='';
-$config['twitter_consumer_secret']='';
+$config['twitter_consumer_key']='MJXNn2LR8Vtl6QzQIpYjX8rDT';
+$config['twitter_consumer_secret']='ywITxZ8q6fTFKUGGZPCIuRPbY82ogt9aqMpjTI1ZgD98qVYTc3';
+
+//PROD
+/*$config['twitter_consumer_key']='CV8EFVv9HiTWvNUYNKNTs6QBQ';
+$config['twitter_consumer_secret']='wh9LsrUga5SvRcMD3MEjqcry9cjIE03m3xhJ8g9pwShjv2nLVQ';
 
 $config['facebook_consumer_key']='';
 $config['facebook_consumer_secret']='';
-
+*/
 //Themes availables in /assets/themes
-$config['theme']	= 'cxc'; //Themes availables in /assets/themes/muevett
+$config['theme']	= 'visualizaton'; //Themes availables in /assets/themes/muevett
 
 /* End of file config.php */
-/* Location: ./application/config/config.php */
+/* Location: ./application/config/config.php 
