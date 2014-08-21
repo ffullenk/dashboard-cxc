@@ -2,6 +2,10 @@ body{
     background: #FFF url(fondo.png) top left no-repeat;
 }
 
+section {
+  min-height: 520px;
+}
+
 #items{
     margin: -2px;
 }
